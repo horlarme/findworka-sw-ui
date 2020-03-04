@@ -1,18 +1,30 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <h1>Star Wars Movie List</h1>
+    <movie v-for="(movie, index) in movies" :key="index" :movie="movie" />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import { apiHost } from '@/../config'
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
+  mounted () {
+    this.fetchMovieList()
+  },
+  data () {
+    return {
+      movies: []
+    }
+  },
+  methods: {
+    fetchMovieList () {
+      console.log('should be fetching')
+
+      fetch(apiHost + '/movies')
+        .then(response => response.json())
+        .then(response => response.result.map(movie => this.movies.push(movie)))
+    }
   }
 }
 </script>
